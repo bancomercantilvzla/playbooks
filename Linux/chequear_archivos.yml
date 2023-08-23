@@ -5,7 +5,7 @@
   tasks:
   - name: Validar si el archivo de config exite
     stat:
-      path: " {{ path }}
+      path: "{{ path }}"
     register: register_name
 
   - name: Registrar si el archivo existe
