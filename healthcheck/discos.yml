@@ -1,0 +1,24 @@
+---
+- hosts: all
+  gather_facts: yes
+  vars:
+      disco: /
+  tasks:
+    - name: Obtener información sobre el espacio en disco {{ disco }}
+      shell: df -BM {{ disco }}
+      register: resultado_df
+      changed_when: false  # No marcamos la tarea como cambiada
+
+    - name: Extraer el tamaño disponible en MB
+      set_fact:
+        disponible_mb: "{{ resultado_df.stdout_lines[1].split()[3] }}"
+      when: resultado_df.stdout_lines | length > 1
+
+    - name: Convertir el tamaño disponible a GB
+      set_fact:
+        disponible_gb: "{{ disponible_mb | int / 1024 | round(2) }}"
+      when: disponible_mb is defined
+
+    - name: Mostrar el tamaño disponible en MB y GB
+      debug:
+        msg: "Tamaño disponible disco {{ disco }} en MB: {{ disponible_mb }} "
