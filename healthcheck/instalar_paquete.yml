@@ -1,0 +1,24 @@
+---
+- name: Verificar e instalar un paquete en Linux
+  hosts: all
+  vars:
+    paquete: telnet
+  gather_facts: no
+  tasks:
+
+  - name: Verificar si el paquete está instalado
+    ansible.builtin.package:
+      name: "{{ paquete }}""
+      state: present
+    register: package_status
+
+  - name: Instalar el paquete si no está instalado
+    ansible.builtin.package:
+      name: "{{ paquete }}"
+      state: present
+    when: not package_status.changed
+
+  - name: Mostrar resultado
+    debug:
+      msg: "El paquete {{ nombre_del_paquete }} está instalado o se instaló correctamente."
+    when: package_status.changed or package_status.failed
