@@ -8,7 +8,7 @@
 
   - name: Verificar si el paquete está instalado
     ansible.builtin.package:
-      name: "{{ paquete }}""
+      name: "{{ paquete }}"
       state: present
     register: package_status
 
@@ -20,5 +20,5 @@
 
   - name: Mostrar resultado
     debug:
-      msg: "El paquete {{ nombre_del_paquete }} está instalado o se instaló correctamente."
+      msg: "El paquete {{ nombpaquete }} está instalado o se instaló correctamente."
     when: package_status.changed or package_status.failed
