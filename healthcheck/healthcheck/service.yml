@@ -1,0 +1,21 @@
+---
+  - name: Validar si un servicio se encuentra activo
+    hosts: all
+    gather_facts: no
+    vars:
+      servicio: chronyd
+    tasks:
+
+    - name: Validar informacion del servicio {{ servicio }}
+      ansible.builtin.systemd:
+        name: "{{ servicio }}.service"
+      register: service_status
+  
+    - debug:
+        var: service_status.status.ActiveState
+
+    - name: Reiniciar servicio {{ servicio }} si se encuentra abajo
+      ansible.builtin.systemd:
+        name: "{{ servicio }}.service"
+        state: started
+      when: service_status.status.ActiveState == "active"

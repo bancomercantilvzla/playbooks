@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Obtener información sobre la memoria usando el comando free
+      command: "free -m"
+      register: resultado_free
+
+    - name: Mostrar información sobre la memoria
+      debug:
+        var: resultado_free.stdout_lines

@@ -1,0 +1,19 @@
+---
+- name: Instalacion y alistamineto de un servidor web apache
+  hosts: all
+  vars:
+    paquete: telnet
+  tasks:
+  - name: Instalar la ultima version del paquete {{ paquete }}
+    ansible.builtin.yum:
+      name: "{{ paquete }}"
+      state: latest
+
+
+  
+  - name: DesHabiliar el servicio de firewalld
+    ansible.builtin.service:
+      name: firewalld
+      enabled: no
+      state: stopped
+

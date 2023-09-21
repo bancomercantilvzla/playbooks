@@ -1,0 +1,14 @@
+  - name: Validacion de actualizaciones pendientes
+    gather_facts: yes
+    hosts: all
+    tasks:
+    - name: Check updates
+      ansible.builtin.command:
+        cmd: dnf check-update
+      register: updates
+
+    - name: Show result
+      ansible.builtin.debug:
+        msg: '{{ updates }}'
+    
+    - name: check if linux has package available

@@ -1,0 +1,17 @@
+---
+- name: Validar si un archivo de configuracion existe
+  hosts: all
+  gather_facts: false
+  vars:
+    archivo: /etc/passwd
+
+  tasks:
+  - name: Validar si el archivo de config exite
+    ansible.builtin.stat:
+      path: "{{ archivo }}"
+    register: register_name
+
+  - name: Registrar si el archivo existe
+    ansible.builtin.debug:
+      msg: "El archivo o directorio existe"
+    when: register_name.stat.exists
