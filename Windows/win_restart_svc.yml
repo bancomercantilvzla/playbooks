@@ -1,0 +1,24 @@
+---
+- name: Control de servicio especifico en Windows
+  gather_facts: false
+  vars:
+    service: spooler
+    state: started # absent,paused,started,stopped,restarted
+  hosts: all
+
+  tasks:
+
+    - name: Obtener informacion del servicio {{ service }}
+      ansible.windows.win_service_info:
+        name: "{{ service }}"
+      register: service_info
+
+    - name: Validar el estado del servicio previamente
+      debug:
+        msg: "{{ service_info.services[0].state }}"
+
+    - name: "Se {{ state }} el servicio {{ service }}"
+      ansible.windows.win_service:
+        name: "{{ service }}"
+        state: "{{ state }}"
+          #when: service_info.services[0].state == "state"
